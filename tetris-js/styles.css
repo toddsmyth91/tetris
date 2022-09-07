@@ -1,0 +1,16 @@
+.container {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 320px;
+    height: 350px;
+    background-color: black;
+    gap: 5px;
+}
+
+.cell {
+    height: 25px;
+    width: 25px;
+    background-color: white;
+}
