@@ -59,12 +59,14 @@ function drawShape(shape, startRow, startCol, show){
                 var currentCol = y + startCol;
                 // console.log('colour in at '+currentRow+'-'+currentCol);
                 // console.log('cell value: ' + shape.returnCells()[x][y]);
-                if(!!shape.returnCells()[x][y]){
+                if(!!shape.returnCells()[x][y] && currentRow < 10 && currentCol < 10){
                     if(show){
                         document.getElementById(currentRow+'-'+currentCol).style.backgroundColor = shape.returnColour();
                     } else {
                         document.getElementById(currentRow+'-'+currentCol).style.backgroundColor = '#fff';
                     }
+                } else if(currentRow == 10 || currentCol == 10) {
+                    console.error('Error trying to draw shape at '+currentRow+'-'+currentCol);
                 }
             }
         }
@@ -78,16 +80,18 @@ function drawShape(shape, startRow, startCol, show){
             for(var y = 0; y < shape.returnHeight(); y++){
                 // var currentRow = x + shape.returnStartRow();
                 // var currentCol = y + shape.returnStartCol();
-                var currentRow = x + startRow;
-                var currentCol = y + startCol;
-                // console.log('colour in at '+currentRow+'-'+currentCol);
+                var currentRow = shape.returnWidth() - x + startRow;
+                var currentCol = shape.returnHeight() - y + startCol;
+                // console.log('colour in at '+currentCol+'-'+currentRow);
                 // console.log('cell value: ' + shape.returnCells()[x][y]);
-                if(!!shape.returnCells()[x][y]){
+                if(!!shape.returnCells()[x][y] && currentRow < 10 && currentCol < 10){
                     if(show){
                         document.getElementById(currentCol+'-'+currentRow).style.backgroundColor = shape.returnColour();
                     } else {
                         document.getElementById(currentCol+'-'+currentRow).style.backgroundColor = '#fff';
                     }
+                } else if(currentRow == 10 || currentCol == 10) {
+                    console.error('Error trying to draw shape at '+currentRow+'-'+currentCol);
                 }
             }
         }
@@ -101,16 +105,18 @@ function drawShape(shape, startRow, startCol, show){
             for(var y = 0; y < shape.returnHeight(); y++){
                 // var currentRow = x + shape.returnStartRow();
                 // var currentCol = y + shape.returnStartCol();
-                var currentRow = x + startRow;
-                var currentCol = y + startCol;
+                var currentRow = shape.returnWidth() - x + startRow;
+                var currentCol = shape.returnHeight() - y + startCol;
                 // console.log('colour in at '+currentRow+'-'+currentCol);
                 // console.log('cell value: ' + shape.returnCells()[x][y]);
-                if(!!shape.returnCells()[x][y]){
+                if(!!shape.returnCells()[x][y] && currentRow < 10 && currentCol < 10){
                     if(show){
                         document.getElementById(currentRow+'-'+currentCol).style.backgroundColor = shape.returnColour();
                     } else {
                         document.getElementById(currentRow+'-'+currentCol).style.backgroundColor = '#fff';
                     }
+                } else if(currentRow == 10 || currentCol == 10) {
+                    console.error('Error trying to draw shape at '+currentRow+'-'+currentCol);
                 }
             }
         }
@@ -129,12 +135,14 @@ function drawShape(shape, startRow, startCol, show){
                 var currentCol = y + startCol;
                 // console.log('colour in at '+currentRow+'-'+currentCol);
                 // console.log('cell value: ' + shape.returnCells()[x][y]);
-                if(!!shape.returnCells()[x][y]){
+                if(!!shape.returnCells()[x][y] && currentRow < 10 && currentCol < 10){
                     if(show){
                         document.getElementById(currentCol+'-'+currentRow).style.backgroundColor = shape.returnColour();
                     } else {
                         document.getElementById(currentCol+'-'+currentRow).style.backgroundColor = '#fff';
                     }
+                } else if(currentRow == 10 || currentCol == 10) {
+                    console.error('Error trying to draw shape at '+currentRow+'-'+currentCol);
                 }
             }
         }
@@ -236,30 +244,37 @@ async function randomTetrisShapes(){
     var randomRow = 0;
     var randomCol = 0;
     var square = new Shape('#F6F743', [[1,1],[1,1]], 2, 2);
-    var tbar = new Shape('#F740F7', [[1,1,1],[0,1,0]], 3, 2, 90);
+    var tbar = new Shape('#F740F7', [[1,1,1],[0,1,0]], 3, 2);
     var zbar = new Shape('#43F640', [[1,1,0],[0,1,1]], 3, 2);
     var lbar = new Shape('#F68201', [[1,1,1],[1,0,0]], 3, 2);
     var bar = new Shape('#43F6F6', [[1,1,1, 1],[]], 4, 1);
-    var shape = tbar;
+    var shape = square;
     // these only work if there is no rotation
-    var maxRow = 11 - shape.returnWidth();
-    var maxCol = 11 - shape.returnHeight();
-    // console.log('lets begin');
+    var maxRow = 0;
+    var maxCol = 0;
+    switch(shape.returnRotation()){
+        case 0: 
+        case 270:
+            maxRow = 11 - shape.returnWidth();
+            maxCol = 11 - shape.returnHeight();
+            break;
+        case 90:
+        case 180:
+            maxCol = 11 - shape.returnWidth();
+            maxRow = 11 - shape.returnHeight();
+            break;
+        default:
+            maxRow = 0;
+            maxCol = 0;
+    }
     for(var i = 0; i < 10; i++){
         if(i > 0){
             drawShape(shape, randomRow, randomCol, false);
-            // document.getElementById(randomRow+'-'+randomCol).style.backgroundColor = '#fff';
         }
         randomRow = Math.floor(Math.random() * maxRow);
         randomCol = Math.floor(Math.random() * maxCol);
-        // console.log('draw shape at starting at coordinates: ' + randomRow + ', ' + randomCol);
-        // document.getElementById(randomRow+'-'+randomCol).style.backgroundColor = '#ff0000';
         drawShape(shape, randomRow, randomCol, true);
         await sleep(500);
-
-        // if(i == 49){
-        //     document.getElementById(randomRow+'-'+randomCol).style.backgroundColor = '#fff';
-        // }
     }
 }
 
